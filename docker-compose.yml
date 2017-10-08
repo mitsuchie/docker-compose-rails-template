@@ -2,9 +2,10 @@ version: '2'
 services:
   app:
     build: rails
+    user: 1000:1000
     volumes:
-      - /app/log
-      #   - ./rails:/app
+      # - /app/log
+      - ./work:/app
     ports:
       - '3000:3000'
     environment:

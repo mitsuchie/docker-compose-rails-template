@@ -11,25 +11,13 @@ RUN apk update && \
 
 RUN mkdir -p /app
 WORKDIR /app
+VOLUME  /app
 
-ADD Gemfile /app/Gemfile
-ADD Gemfile.lock /app/Gemfile.lock
+RUN echo 'gem: --no-document' > /etc/gemrc
 
-RUN gem install bundler
-RUN bundle install -j4
+ENV HOME /app
+ENV BUNDLE_APP_CONFIG /app/.bundle
 
-ADD . /app
-RUN rails new . --force --database=mysql
-
-ADD ./config/* /app/config/
-
-# Database 
-# RUN cp database.yml config/database.yml
-
-# WebServer
 RUN mkdir -p /app/tmp/sockets
-VOLUME /app/public
-VOLUME /app/tmp
-
 CMD bundle exec puma
 # CMD bundle exec rails s -p 3000 -b '0.0.0.0'
